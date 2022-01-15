@@ -6,7 +6,7 @@ This is the source code for my Pluralsight course Encapsulating EF Core Usage (l
 How to Get Started
 --------------
 
-Create a database using the Database-initial.sql script, modify the connection string in appsettings.json, and you are good to go!
+Create a database using the [Database-initial.sql script][L3], modify the connection string in appsettings.json, and you are good to go!
 
 Source code for each module
 ---------------------------
@@ -15,3 +15,4 @@ Source code for each module is tagged and available on the [Releases tab][L2]. F
 
 
 [L2]: https://github.com/vkhorikov/EFCoreEncapsulation/releases
+[L3]: https://github.com/vkhorikov/EFCoreEncapsulation/blob/main/1_Database_initial.sql
