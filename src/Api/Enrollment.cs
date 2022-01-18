@@ -3,21 +3,9 @@
 public class Enrollment
 {
     public long Id { get; set; }
-    public Grade Grade { get; }
-    public virtual Course Course { get; }
-    public virtual Student Student { get; }
-
-    protected Enrollment()
-    {
-    }
-
-    public Enrollment(Course course, Student student, Grade grade)
-        : this()
-    {
-        Course = course;
-        Student = student;
-        Grade = grade;
-    }
+    public Grade Grade { get; set; }
+    public virtual Course Course { get; set; }
+    public virtual Student Student { get; set; }
 }
 
 public enum Grade
