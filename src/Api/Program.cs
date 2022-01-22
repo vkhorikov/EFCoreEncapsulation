@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace EFCoreEncapsulation.Api;
 
 public class Program
@@ -9,10 +7,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container
-        
-        builder.Services.AddDbContext<SchoolContext>(
-            options => options.UseSqlServer(builder.Configuration["ConnectionString"]));
 
+        builder.Services.AddScoped(_ => new SchoolContext(builder.Configuration["ConnectionString"], true));
         builder.Services.AddControllers();
 
         var app = builder.Build();

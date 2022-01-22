@@ -4,13 +4,47 @@ namespace EFCoreEncapsulation.Api;
 
 public sealed class SchoolContext : DbContext
 {
+    private readonly string _connectionString;
+    private readonly bool _useConsoleLogger;
+
     public DbSet<Student> Students { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
-
-    public SchoolContext(DbContextOptions<SchoolContext> options)
-        : base(options)
+    
+    public SchoolContext(string connectionString, bool useConsoleLogger)
     {
+        _connectionString = connectionString;
+        _useConsoleLogger = useConsoleLogger;
+    }
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(_connectionString);
+
+        if (_useConsoleLogger)
+        {
+            optionsBuilder
+                .UseLoggerFactory(CreateLoggerFactory())
+                .EnableSensitiveDataLogging();
+        }
+        else
+        {
+            optionsBuilder
+                .UseLoggerFactory(CreateEmptyLoggerFactory());
+        }
+    }
+
+    private static ILoggerFactory CreateEmptyLoggerFactory()
+    {
+        return LoggerFactory.Create(builder => builder
+            .AddFilter((_, _) => false));
+    }
+
+    private static ILoggerFactory CreateLoggerFactory()
+    {
+        return LoggerFactory.Create(builder => builder
+            .AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information)
+            .AddConsole());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
