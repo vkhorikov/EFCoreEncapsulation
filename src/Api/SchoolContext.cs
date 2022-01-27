@@ -56,6 +56,7 @@ public sealed class SchoolContext : DbContext
             x.Property(p => p.Email);
             x.Property(p => p.Name);
             x.HasMany(p => p.Enrollments).WithOne(p => p.Student);
+            x.Navigation(p => p.Enrollments).AutoInclude();
         });
         modelBuilder.Entity<Course>(x =>
         {
@@ -69,6 +70,7 @@ public sealed class SchoolContext : DbContext
             x.Property(p => p.Id).HasColumnName("EnrollmentID");
             x.HasOne(p => p.Student).WithMany(p => p.Enrollments);
             x.HasOne(p => p.Course).WithMany();
+            x.Navigation(p => p.Course).AutoInclude();
             x.Property(p => p.Grade);
         });
     }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreEncapsulation.Api;
 
@@ -6,23 +7,31 @@ namespace EFCoreEncapsulation.Api;
 [Route("students")]
 public class StudentController : ControllerBase
 {
-    private readonly SchoolContext _context;
+    private readonly StudentRepository _repository;
 
-    public StudentController(SchoolContext context)
+    public StudentController(StudentRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     [HttpGet("{id}")]
     public StudentDto Get(long id)
     {
-        Student student = _context.Students.Find(id);
+        Student student = _repository.GetById(id);
+
+        if (student == null)
+            return null;
 
         return new StudentDto
         {
             StudentId = student.Id,
             Name = student.Name,
-            Email = student.Email
+            Email = student.Email,
+            Enrollments = student.Enrollments.Select(x => new EnrollmentDto
+            {
+                Course = x.Course.Name,
+                Grade = x.Grade.ToString()
+            }).ToList()
         };
     }
 }
