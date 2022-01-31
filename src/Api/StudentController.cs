@@ -8,10 +8,12 @@ namespace EFCoreEncapsulation.Api;
 public class StudentController : ControllerBase
 {
     private readonly StudentRepository _repository;
+    private readonly SchoolContext _context;
 
-    public StudentController(StudentRepository repository)
+    public StudentController(StudentRepository repository, SchoolContext context)
     {
         _repository = repository;
+        _context = context;
     }
 
     [HttpGet("{id}")]
@@ -33,5 +35,15 @@ public class StudentController : ControllerBase
                 Grade = x.Grade.ToString()
             }).ToList()
         };
+    }
+
+    [HttpPost]
+    public void Register()
+    {
+        var student = new Student();
+
+        // Assign student data from the incoming DTO
+
+        _repository.Save(student);
     }
 }

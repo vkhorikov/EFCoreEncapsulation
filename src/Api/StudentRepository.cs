@@ -24,7 +24,7 @@ public class StudentRepository
 
     public Student GetById(long id)
     {
-        Student student = _context.Students.SingleOrDefault(x => x.Id == id);
+        Student student = _context.Students.Find(id);
 
         if (student == null)
             return null;
@@ -33,5 +33,14 @@ public class StudentRepository
         _context.Entry(student).Collection(x => x.SportsEnrollments).Load();
 
         return student;
+    }
+
+    public void Save(Student student)
+    {
+        // Use one of:
+
+        _context.Students.Add(student);
+        _context.Students.Update(student);
+        _context.Students.Attach(student);
     }
 }
