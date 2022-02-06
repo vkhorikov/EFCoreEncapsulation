@@ -10,6 +10,7 @@ public class Program
 
         builder.Services.AddScoped(_ => new SchoolContext(builder.Configuration["ConnectionString"], true));
         builder.Services.AddTransient<StudentRepository>();
+        builder.Services.AddTransient<Repository<Course>>();
         builder.Services.AddControllers();
 
         var app = builder.Build();

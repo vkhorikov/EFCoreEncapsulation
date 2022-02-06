@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreEncapsulation.Api;
 
@@ -9,11 +8,13 @@ public class StudentController : ControllerBase
 {
     private readonly StudentRepository _repository;
     private readonly SchoolContext _context;
+    private readonly Repository<Course> _courseRepository;
 
-    public StudentController(StudentRepository repository, SchoolContext context)
+    public StudentController(StudentRepository repository, SchoolContext context, Repository<Course> courseRepository)
     {
         _repository = repository;
         _context = context;
+        _courseRepository = courseRepository;
     }
 
     [HttpGet("{id}")]
