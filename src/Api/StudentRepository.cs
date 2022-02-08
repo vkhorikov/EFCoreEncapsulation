@@ -20,7 +20,26 @@ public class StudentRepository : Repository<Student>
             .SingleOrDefault(x => x.Id == id);
     }
 
-    public override Student GetById(long id)
+    public Student GetById(long id, bool withCourseEnrollments, bool withSportsEnrollments)
+    {
+        Student student = _context.Students.Find(id);
+
+        if (student == null)
+            return null;
+
+        if (withCourseEnrollments)
+        {
+            _context.Entry(student).Collection(x => x.Enrollments).Load();
+        }
+        if (withSportsEnrollments)
+        {
+            _context.Entry(student).Collection(x => x.SportsEnrollments).Load();
+        }
+
+        return student;
+    }
+
+    public Student GetByIdWithEnrollments(long id)
     {
         Student student = _context.Students.Find(id);
 
@@ -51,13 +70,13 @@ public class CourseRepository : Repository<Course>
     }
 }
 
-public class Repository<T>
+public abstract class Repository<T>
     where T : class
 //    where T : Entity
 {
     protected readonly SchoolContext _context;
 
-    public Repository(SchoolContext context)
+    protected Repository(SchoolContext context)
     {
         _context = context;
     }
