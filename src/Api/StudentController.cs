@@ -20,22 +20,7 @@ public class StudentController : ControllerBase
     [HttpGet("{id}")]
     public StudentDto Get(long id)
     {
-        Student student = _repository.GetById(id);
-
-        if (student == null)
-            return null;
-
-        return new StudentDto
-        {
-            StudentId = student.Id,
-            Name = student.Name,
-            Email = student.Email,
-            Enrollments = student.Enrollments.Select(x => new EnrollmentDto
-            {
-                Course = x.Course.Name,
-                Grade = x.Grade.ToString()
-            }).ToList()
-        };
+        return _repository.GetDto(id);
     }
 
     [HttpPost]
@@ -46,12 +31,13 @@ public class StudentController : ControllerBase
         // Assign student data from the incoming DTO
 
         _repository.Save(student);
+        _context.SaveChanges();
     }
 
     [HttpPost]
     public string Enroll(long studentId, long courseId, Grade grade)
     {
-        Student student = _repository.GetById(studentId, true, false);
+        Student student = _repository.GetById(studentId);
         if (student == null)
             return "Student not found";
 
@@ -60,7 +46,7 @@ public class StudentController : ControllerBase
             return "Course not found";
 
         string result = student.EnrollIn(course, grade);
-
+        
         _context.SaveChanges();
 
         return result;

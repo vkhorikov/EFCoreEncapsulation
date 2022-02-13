@@ -9,37 +9,46 @@ public class StudentRepository : Repository<Student>
     {
     }
 
-    public Student GetByIdSplitQueries(long id)
-    {
-        return _context.Students
-            .Include(x => x.Enrollments)
-            .ThenInclude(x => x.Course)
-            .Include(x => x.SportsEnrollments)
-            .ThenInclude(x => x.Sports)
-            .AsSplitQuery()
-            .SingleOrDefault(x => x.Id == id);
-    }
+    //public Student GetByIdSplitQueries(long id)
+    //{
+    //    return _context.Students
+    //        .Include(x => x.Enrollments)
+    //        .ThenInclude(x => x.Course)
+    //        .Include(x => x.SportsEnrollments)
+    //        .ThenInclude(x => x.Sports)
+    //        .AsSplitQuery()
+    //        .SingleOrDefault(x => x.Id == id);
+    //}
 
-    public Student GetById(long id, bool withCourseEnrollments, bool withSportsEnrollments)
+    public StudentDto GetDto(long id)
     {
         Student student = _context.Students.Find(id);
 
         if (student == null)
             return null;
 
-        if (withCourseEnrollments)
-        {
-            _context.Entry(student).Collection(x => x.Enrollments).Load();
-        }
-        if (withSportsEnrollments)
-        {
-            _context.Entry(student).Collection(x => x.SportsEnrollments).Load();
-        }
+        List<EnrollmentData> enrollments = _context.Set<EnrollmentData>()
+            .FromSqlInterpolated($@"
+                SELECT e.StudentID, e.Grade, c.Name Course
+                FROM dbo.Enrollment e
+                INNER JOIN dbo.Course c ON e.CourseID = c.CourseID
+                WHERE e.StudentID = {id}")
+            .ToList();
 
-        return student;
+        return new StudentDto
+        {
+            StudentId = id,
+            Name = student.Name,
+            Email = student.Email,
+            Enrollments = enrollments.Select(x => new EnrollmentDto
+            {
+                Course = x.Course,
+                Grade = ((Grade)x.Grade).ToString()
+            }).ToList()
+        };
     }
 
-    public Student GetByIdWithEnrollments(long id)
+    public override Student GetById(long id)
     {
         Student student = _context.Students.Find(id);
 

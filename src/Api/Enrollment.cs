@@ -4,7 +4,7 @@ public class Enrollment
 {
     public long Id { get; set; }
     public Grade Grade { get; set; }
-    public Course Course { get; set; }
+    public long CourseId { get; set; }
     public Student Student { get; set; }
 }
 
@@ -21,7 +21,7 @@ public class SportsEnrollment
 {
     public long Id { get; set; }
     public Grade Grade { get; set; }
-    public Sports Sports { get; set; }
+    public long SportsId { get; set; }
     public Student Student { get; set; }
 }
 

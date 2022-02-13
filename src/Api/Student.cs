@@ -10,12 +10,12 @@ public class Student
 
     public string EnrollIn(Course course, Grade grade)
     {
-        if (Enrollments.Any(x => x.Course == course))
+        if (Enrollments.Any(x => x.CourseId == course.Id))
             return $"Already enrolled in course '{course.Name}'";
 
         var enrollment = new Enrollment
         {
-            Course = course,
+            CourseId = course.Id,
             Grade = grade,
             Student = this
         };

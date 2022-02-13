@@ -71,8 +71,7 @@ public sealed class SchoolContext : DbContext
             x.ToTable("Enrollment").HasKey(k => k.Id);
             x.Property(p => p.Id).HasColumnName("EnrollmentID");
             x.HasOne(p => p.Student).WithMany(p => p.Enrollments);
-            x.HasOne(p => p.Course).WithMany();
-            x.Navigation(p => p.Course).AutoInclude();
+            x.Property(p => p.CourseId);
             x.Property(p => p.Grade);
         });
         modelBuilder.Entity<Sports>(x =>
@@ -86,9 +85,37 @@ public sealed class SchoolContext : DbContext
             x.ToTable("SportsEnrollment").HasKey(k => k.Id);
             x.Property(p => p.Id).HasColumnName("SportsEnrollmentID");
             x.HasOne(p => p.Student).WithMany(p => p.SportsEnrollments);
-            x.HasOne(p => p.Sports).WithMany();
+            x.Property(p => p.SportsId);
             x.Property(p => p.Grade);
-            x.Navigation(p => p.Sports).AutoInclude();
         });
+        modelBuilder.Entity<EnrollmentData>(x =>
+        {
+            x.HasNoKey();
+            x.Property(p => p.StudentId);
+            x.Property(p => p.Grade);
+            x.Property(p => p.Course);
+        });
+    }
+}
+
+internal class EnrollmentData
+{
+    public long StudentId { get; set; }
+    public int Grade { get; set; }
+    public string Course { get; set; }
+}
+
+public class UnitOfWork
+{
+    private readonly SchoolContext _context;
+
+    public UnitOfWork(SchoolContext context)
+    {
+        _context = context;
+    }
+
+    public void Save()
+    {
+        _context.SaveChanges();
     }
 }
