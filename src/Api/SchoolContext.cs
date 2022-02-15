@@ -6,10 +6,6 @@ public sealed class SchoolContext : DbContext
 {
     private readonly string _connectionString;
     private readonly bool _useConsoleLogger;
-
-    public DbSet<Student> Students { get; set; }
-    public DbSet<Course> Courses { get; set; }
-    public DbSet<Enrollment> Enrollments { get; set; }
     
     public SchoolContext(string connectionString, bool useConsoleLogger)
     {

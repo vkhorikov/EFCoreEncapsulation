@@ -22,7 +22,7 @@ public class StudentRepository : Repository<Student>
 
     public StudentDto GetDto(long id)
     {
-        Student student = _context.Students.Find(id);
+        Student student = _context.Set<Student>().Find(id);
 
         if (student == null)
             return null;
@@ -50,7 +50,7 @@ public class StudentRepository : Repository<Student>
 
     public override Student GetById(long id)
     {
-        Student student = _context.Students.Find(id);
+        Student student = _context.Set<Student>().Find(id);
 
         if (student == null)
             return null;
@@ -65,9 +65,9 @@ public class StudentRepository : Repository<Student>
     {
         // Use one of:
 
-        _context.Students.Add(student);
-        _context.Students.Update(student);
-        _context.Students.Attach(student);
+        _context.Set<Student>().Add(student);
+        _context.Set<Student>().Update(student);
+        _context.Set<Student>().Attach(student);
     }
 }
 
