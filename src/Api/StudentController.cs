@@ -23,6 +23,21 @@ public class StudentController : ControllerBase
         return _repository.GetDto(id);
     }
 
+    [HttpGet]
+    public IEnumerable<StudentDto> GetAll()
+    {
+        return _repository.GetAll(".edu")
+            .Select(MapToDto)
+            .ToList();
+    }
+
+    private StudentDto MapToDto(Student student)
+    {
+        // Map student entity to StudentDto
+
+        return null;
+    }
+
     [HttpPost]
     public void Register()
     {

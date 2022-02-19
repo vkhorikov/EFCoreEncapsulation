@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreEncapsulation.Api;
 
@@ -68,6 +69,18 @@ public class StudentRepository : Repository<Student>
         _context.Set<Student>().Add(student);
         _context.Set<Student>().Update(student);
         _context.Set<Student>().Attach(student);
+    }
+
+    public IReadOnlyList<Student> GetAll(string emailDomain)
+    {
+        IQueryable<Student> queryable = _context.Set<Student>();
+
+        if (string.IsNullOrWhiteSpace(emailDomain) == false)
+        {
+            queryable = queryable.Where(x => x.Email.EndsWith(emailDomain));
+        }
+
+        return queryable.ToList();
     }
 }
 
