@@ -24,7 +24,7 @@ public class StudentController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<StudentDto> GetAll()
+    public IReadOnlyList<StudentDto> GetAll()
     {
         return _repository.GetAll(".edu")
             .Select(MapToDto)
