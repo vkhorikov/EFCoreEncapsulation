@@ -11,9 +11,9 @@ Create a database using the [Database-initial.sql][L3] script, modify the connec
 Source code for each module
 ---------------------------
 
-Source code for each module is tagged and available on the [Releases tab][L2]. For example, tag "module-3-encapsulating-the-dbcontext" indicates the state of the sample project at the start of module 3, which is titled "Encapsulating the DbContext"
+Source code for each module is tagged and available on the [Tags tab][L2]. For example, tag "module-3-encapsulating-the-dbcontext" indicates the state of the sample project at the start of module 3, which is titled "Encapsulating the DbContext"
 
 [L1]: https://enterprisecraftsmanship.com/ps-ef-core-2
-[L2]: https://github.com/vkhorikov/EFCoreEncapsulation/releases
+[L2]: https://github.com/vkhorikov/EFCoreEncapsulation/tags
 [L3]: https://github.com/vkhorikov/EFCoreEncapsulation/blob/main/1_Database_initial.sql
 [L4]: https://github.com/vkhorikov/EFCoreEncapsulation/blob/main/src/Api/appsettings.json
