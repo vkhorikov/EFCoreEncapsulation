@@ -1,7 +1,7 @@
 Welcome to Encapsulating EF Core Usage
 =====================
 
-This is the source code for my Pluralsight course Encapsulating EF Core Usage [link is coming soon][L1]
+This is the source code for my Pluralsight course [Encapsulating EF Core Usage][L1]
 
 How to Get Started
 --------------
